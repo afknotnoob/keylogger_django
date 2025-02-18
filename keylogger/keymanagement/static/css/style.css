@@ -1,0 +1,78 @@
+/* Global Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f7ff; /* Light Blue */
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #0056b3; /* Deep Blue */
+    padding: 15px;
+    text-align: center;
+}
+
+.navbar h1 {
+    color: white;
+    margin: 0;
+}
+
+/* Dashboard Styling */
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Buttons */
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Forms */
+input {
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+}
+
+/* Messages */
+.messages {
+    background: #cce5ff;
+    color: #004085;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
