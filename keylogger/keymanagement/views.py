@@ -33,39 +33,51 @@ def dashboard(request):
         staff_rfid = request.POST.get("staff_rfid")
         key_rfid = request.POST.get("key_rfid")
 
-        # Check if staff RFID exists in the database
+        # Validate Staff RFID
         try:
             staff = Staff.objects.get(staff_rfid=staff_rfid)
         except Staff.DoesNotExist:
-            messages.error(request, "Invalid Staff RFID! Staff not found.")
+            messages.error(request, "❌ Invalid Staff RFID! Staff not found.")
             return redirect("dashboard")
 
-        # Check if key RFID exists in the database
+        # Validate Key RFID
         try:
             key = Key.objects.get(key_rfid=key_rfid)
         except Key.DoesNotExist:
-            messages.error(request, "Invalid Key RFID! Key not found.")
+            messages.error(request, "❌ Invalid Key RFID! Key not found.")
             return redirect("dashboard")
 
-        # Check if key is already checked out
+        # Check if the key is already checked out
         log_entry = KeyLog.objects.filter(key=key, return_status=False).first()
-        
+
         if log_entry:
-            # If the key is already checked out, mark it as returned
+            # If key is checked out, mark it as returned
             log_entry.checkin_time = now()
             log_entry.return_status = True
             log_entry.save()
-            messages.success(request, f"Key returned successfully by {staff.staff_name}.")
+            messages.success(request, f"✔ Key '{key.key_name}' successfully returned by {staff.name}.")
         else:
-            # Otherwise, log a new key check-out
+            # Otherwise, issue a new key
             KeyLog.objects.create(staff=staff, key=key, checkout_time=now(), return_status=False)
-            messages.success(request, f"Key issued successfully to {staff.staff_name}.")
+            messages.success(request, f"✔ Key '{key.key_name}' successfully issued to {staff.name}.")
 
         return redirect("dashboard")
 
-    # Retrieve all logs for display
+    # Retrieve all logs and verify valid staff and key entries
     logs = KeyLog.objects.all().order_by("-checkout_time")
-    return render(request, "keymanagement/dashboard.html", {"logs": logs})
+
+    # Pass logs with proper validation for display
+    valid_logs = []
+    for log in logs:
+        try:
+            log.staff_name = Staff.objects.get(id=log.staff.id).name
+            log.key_name = Key.objects.get(id=log.key.id).key_name
+            valid_logs.append(log)
+        except (Staff.DoesNotExist, Key.DoesNotExist):
+            continue  # Skip invalid entries
+
+    return render(request, "keymanagement/dashboard.html", {"logs": valid_logs})
+
 
 # Export Logs as Excel
 @login_required

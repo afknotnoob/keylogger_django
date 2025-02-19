@@ -11,14 +11,14 @@
 <body>
 
     <div class="navbar">
-        <h1>Key Management System</h1>
+        <h1>🔑 Key Management System</h1>
     </div>
 
     <div class="container">
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-                    {{ message }}
+                    <p>{{ message }}</p>
                 {% endfor %}
             </div>
         {% endif %}
@@ -26,28 +26,28 @@
         <h2>Issue/Return Keys</h2>
         <form method="post">
             {% csrf_token %}
-            <label for="staff_rfid">Staff RFID:</label>
+            <label for="staff_rfid">📌 Staff RFID:</label>
             <input type="text" id="staff_rfid" name="staff_rfid" required>
 
-            <label for="key_rfid">Key RFID:</label>
+            <label for="key_rfid">🔑 Key RFID:</label>
             <input type="text" id="key_rfid" name="key_rfid" required>
 
             <button type="submit">Submit</button>
         </form>
 
-        <h2>Key Logs</h2>
+        <h2>📋 Key Logs</h2>
         <table>
             <tr>
-                <th>Staff Name</th>
-                <th>Key</th>
-                <th>Check-Out Time</th>
-                <th>Check-In Time</th>
+                <th>👨 Staff Name</th>
+                <th>🔑 Key</th>
+                <th>⏳ Check-Out Time</th>
+                <th>✅ Check-In Time</th>
                 <th>Status</th>
             </tr>
             {% for log in logs %}
             <tr>
-                <td>{{ log.staff.staff_name }}</td>
-                <td>{{ log.key.key_name }}</td>
+                <td>{{ log.staff_name }}</td>
+                <td>{{ log.key_name }}</td>
                 <td>{{ log.checkout_time }}</td>
                 <td>{{ log.checkin_time|default:"Not Returned" }}</td>
                 <td>{% if log.return_status %}✔ Returned{% else %}❌ Not Returned{% endif %}</td>
@@ -55,8 +55,8 @@
             {% endfor %}
         </table>
 
-        <button id="clearLogs">Clear Logs</button>
-        <button>Print Logs</button>
+        <button id="clearLogs">🗑 Clear Logs</button>
+        <button onclick="window.print()">🖨 Print Logs</button>
     </div>
 
 </body>
