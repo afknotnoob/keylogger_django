@@ -37,28 +37,72 @@
         </form>
 
         <h2>📋 Key Logs</h2>
-        <table>
-            <tr>
-                <th> Staff Name</th>
-                <th>🔑 Key</th>
-                <th>⏳ Check-Out Time</th>
-                <th>✅ Check-In Time</th>
-                <th>Status</th>
-            </tr>
-            {% for log in logs %}
-            <tr>
-                <td>{{ log.staff_name }}</td>
-                <td>{{ log.key_name }}</td>
-                <td>{{ log.checkout_time }}</td>
-                <td>{{ log.checkin_time|default:"Not Returned" }}</td>
-                <td>{% if log.return_status %}✔ Returned{% else %}❌ Not Returned{% endif %}</td>
-            </tr>
-            {% endfor %}
+
+        <!-- Filters -->
+        <div class="filters">
+            <label for="statusFilter">Filter by Status:</label>
+            <select id="statusFilter">
+                <option value="all">All</option>
+                <option value="returned">✔ Returned</option>
+                <option value="not_returned">❌ Not Returned</option>
+            </select>
+
+            <label for="nameFilter">Search by Name:</label>
+            <input type="text" id="nameFilter" placeholder="Enter staff name">
+        </div>
+
+        <table id="logsTable">
+            <thead>
+                <tr>
+                    <th>Staff Name</th>
+                    <th>🔑 Key</th>
+                    <th>⏳ Check-Out Time</th>
+                    <th>✅ Check-In Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr class="log-row" data-status="{% if log.return_status %}returned{% else %}not_returned{% endif %}">
+                    <td class="staff-name">{{ log.staff_name }}</td>
+                    <td>{{ log.key_name }}</td>
+                    <td>{{ log.checkout_time }}</td>
+                    <td>{{ log.checkin_time|default:"Not Returned" }}</td>
+                    <td>{% if log.return_status %}✔ Returned{% else %}❌ Not Returned{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <button id="clearLogs">🗑 Clear Logs</button>
         <button onclick="window.print()">🖨 Print Logs</button>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const statusFilter = document.getElementById("statusFilter");
+            const nameFilter = document.getElementById("nameFilter");
+            const rows = document.querySelectorAll(".log-row");
+
+            function filterLogs() {
+                const statusValue = statusFilter.value;
+                const nameValue = nameFilter.value.toLowerCase();
+
+                rows.forEach(row => {
+                    const status = row.getAttribute("data-status");
+                    const name = row.querySelector(".staff-name").textContent.toLowerCase();
+
+                    const matchesStatus = (statusValue === "all" || status === statusValue);
+                    const matchesName = (name.includes(nameValue));
+
+                    row.style.display = (matchesStatus && matchesName) ? "" : "none";
+                });
+            }
+
+            statusFilter.addEventListener("change", filterLogs);
+            nameFilter.addEventListener("keyup", filterLogs);
+        });
+    </script>
 
 </body>
 </html>
