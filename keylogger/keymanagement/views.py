@@ -19,6 +19,8 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return redirect('dashboard')  # Redirect to dashboard
+        else:
+            messages.error(request, "Invalid username or password.")
     return render(request, 'keymanagement/login.html')
 
 # Security Logout
