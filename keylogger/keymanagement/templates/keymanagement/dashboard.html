@@ -70,9 +70,27 @@
                     <td>{{ log.checkin_time|default:"Not Returned" }}</td>
                     <td>{% if log.return_status %}✔ Returned{% else %}❌ Not Returned{% endif %}</td>
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No logs available.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <div class="pagination">
+            {% if logs.has_previous %}
+                <a href="?page=1">⏮ First</a>
+                <a href="?page={{ logs.previous_page_number }}">◀ Previous</a>
+            {% endif %}
+        
+            <span>Page {{ logs.number }} of {{ logs.paginator.num_pages }}</span>
+        
+            {% if logs.has_next %}
+                <a href="?page={{ logs.next_page_number }}">Next ▶</a>
+                <a href="?page={{ logs.paginator.num_pages }}">Last ⏭</a>
+            {% endif %}
+        </div>
 
         <button id="clearLogs">🗑 Clear Logs</button>
         <button onclick="window.print()">🖨 Print Logs</button>

@@ -205,3 +205,27 @@ ul li {
     padding: 5px;
     margin-right: 10px;
 }
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 5px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.pagination a:hover {
+    background: #0056b3;
+}
+
+.pagination span {
+    padding: 8px 12px;
+    font-weight: bold;
+}
