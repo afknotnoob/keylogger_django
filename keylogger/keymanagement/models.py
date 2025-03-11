@@ -8,6 +8,8 @@ class Staff(models.Model):
     employee_id = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
     staff_rfid = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} ({self.employee_id})"
