@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'keymanagement',
-    'django_celery_beat',
 ]
 
 LOGIN_URL = '/login/'
@@ -138,12 +137,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ezio88722@gmail.com'  # Replace with your email
 
 EMAIL_HOST_PASSWORD = 'cavp xepz nnfi odcd'  # Use an App Password, not your real password
-
-# Celery Configuration
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis as broker
-
-CELERY_ACCEPT_CONTENT = ['json']
-
-CELERY_TASK_SERIALIZER = 'json'
-
-CELERY_BEAT_SCHEDULE = {}
