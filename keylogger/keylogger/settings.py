@@ -137,3 +137,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ezio88722@gmail.com'  # Replace with your email
 
 EMAIL_HOST_PASSWORD = 'cavp xepz nnfi odcd'  # Use an App Password, not your real password
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

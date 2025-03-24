@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 from django.utils.timezone import now
 from .models import Staff, Key, KeyLog
 import pandas as pd
@@ -101,3 +103,28 @@ def export_logs(request):
 def clear_logs(request):
     KeyLog.objects.all().delete()
     return redirect('dashboard')
+
+@login_required
+def send_reminder_emails(request):
+    # Get all logs where the key is not returned
+    overdue_logs = KeyLog.objects.filter(return_status=False)
+
+    print("Function called!")  # Debugging
+
+    # Collect emails of staff members who haven't returned keys
+    recipient_emails = []
+    for log in overdue_logs:
+        if log.staff.email:  # Ensure staff has an email
+            recipient_emails.append(log.staff.email)
+
+    if recipient_emails:
+        subject = "Reminder: Please return your issued key(s)"
+        message = "Dear Staff,\n\nThis is a reminder to return the key(s) you have checked out. Please return them at the earliest convenience.\n\nThank you!"
+        email_from = settings.EMAIL_HOST_USER
+
+        send_mail(subject, message, email_from, recipient_emails)
+        messages.success(request, "📩 Reminder emails sent successfully!")
+    else:
+        messages.warning(request, "No pending key returns or no staff emails available.")
+
+    return redirect("dashboard")

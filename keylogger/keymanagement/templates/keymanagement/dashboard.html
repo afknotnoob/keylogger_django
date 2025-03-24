@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script defer src="{% static 'js/script.js' %}"></script>
 </head>
+
 <body>
 
     <div class="navbar">
@@ -17,11 +19,11 @@
 
     <div class="container">
         {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
+        <div class="messages">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
         {% endif %}
 
         <h2>Issue/Return Keys</h2>
@@ -80,20 +82,21 @@
 
         <div class="pagination">
             {% if logs.has_previous %}
-                <a href="?page=1">⏮ First</a>
-                <a href="?page={{ logs.previous_page_number }}">◀ Previous</a>
+            <a href="?page=1">⏮ First</a>
+            <a href="?page={{ logs.previous_page_number }}">◀ Previous</a>
             {% endif %}
-        
+
             <span>Page {{ logs.number }} of {{ logs.paginator.num_pages }}</span>
-        
+
             {% if logs.has_next %}
-                <a href="?page={{ logs.next_page_number }}">Next ▶</a>
-                <a href="?page={{ logs.paginator.num_pages }}">Last ⏭</a>
+            <a href="?page={{ logs.next_page_number }}">Next ▶</a>
+            <a href="?page={{ logs.paginator.num_pages }}">Last ⏭</a>
             {% endif %}
         </div>
 
         <button id="clearLogs">🗑 Clear Logs</button>
         <button onclick="window.print()">🖨 Print Logs</button>
+        <button id="sendMail">📧 Send Mail</button>
     </div>
 
     <script>
@@ -116,6 +119,15 @@
                     row.style.display = (matchesStatus && matchesName) ? "" : "none";
                 });
             }
+            let sendMailButton = document.getElementById("sendMail");
+
+            console.log("sendMailButton exists");
+            sendMailButton.addEventListener("click", function () {
+                console.log("sendMailButton clicked");
+                if (confirm("Send reminder emails to staff with unreturned keys?")) {
+                    window.location.href = "/send_mail/";
+                }
+            });
 
             statusFilter.addEventListener("change", filterLogs);
             nameFilter.addEventListener("keyup", filterLogs);
@@ -123,4 +135,5 @@
     </script>
 
 </body>
+
 </html>
