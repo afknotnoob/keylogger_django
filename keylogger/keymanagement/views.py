@@ -81,11 +81,11 @@ def dashboard(request):
         except (Staff.DoesNotExist, Key.DoesNotExist):
             continue  # Skip invalid entries
     
-    paginator = Paginator(valid_logs, 5)  
+    paginator = Paginator(valid_logs, 10)  
     page_number = request.GET.get("page")  
     logs = paginator.get_page(page_number)
 
-    return render(request, "keymanagement/dashboard.html", {"logs": valid_logs})
+    return render(request, "keymanagement/dashboard.html", {"logs": logs})
 
 
 # Export Logs as Excel
